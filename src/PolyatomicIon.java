@@ -1,8 +1,8 @@
 import java.util.HashMap;
 
-public class polyatomicIon extends Element{
+public class PolyatomicIon extends Element{
     private HashMap<Element,Integer> elementCount = new HashMap<>();
-    public polyatomicIon(HashMap<Element,Integer> elementCount, String ionName, int charge, float atomicMass, int atomicNumber){
+    public PolyatomicIon(HashMap<Element,Integer> elementCount, String ionName, int charge, float atomicMass, int atomicNumber){
         //calculate molar mass here
         //no element name, ion name only (i.e. nitrate); hence elementName is null
         super(ionName, charge,null, atomicMass, atomicNumber);
