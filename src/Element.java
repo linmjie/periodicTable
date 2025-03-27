@@ -5,6 +5,7 @@ public class Element {
 
     private String ionName;
     private int charge;
+    private int[]chargeArray;
     public Element (String elementName, float atomicMass, int atomicNumber){
         this.elementName=elementName;
         this.atomicMass=atomicMass;
@@ -17,6 +18,13 @@ public class Element {
         this.atomicNumber=atomicNumber;
         this.ionName=ionName;
         this.charge=charge;
+    }
+    public Element(String ionName, int[]chargeArray, String elementName, float atomicMass, int atomicNumber){
+        this.elementName=elementName;
+        this.atomicMass=atomicMass;
+        this.atomicNumber=atomicNumber;
+        this.ionName=ionName;
+        this.chargeArray=chargeArray;
     }
     //no atomic mass
     public Element (String elementName, int atomicNumber){
@@ -39,6 +47,9 @@ public class Element {
     }
     public int getCharge(){
         return charge;
+    }
+    public int[]getChargeArray(){
+        return chargeArray;
     }
     @Override
     public String toString(){

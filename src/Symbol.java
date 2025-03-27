@@ -1,7 +1,7 @@
 import java.util.HashMap;
 
 public class Symbol {
-    static Element H = new Element ("hydrogen", 1.00794F, 1);
+    static Element H = new Element ( "hydrogen", 1.00794F, 1);
     static Element He = new Element ("helium", 4.00260F, 2);
     static Element Li = new Element ("lithium", 6.941F, 3);
     static Element Be = new Element ("beryllium", 9.012182F, 4);
