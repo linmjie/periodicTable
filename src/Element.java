@@ -19,6 +19,7 @@ public class Element {
         this.ionName=ionName;
         this.charge=charge;
     }
+    //ions with multiple charges
     public Element(String ionName, int[]chargeArray, String elementName, float atomicMass, int atomicNumber){
         this.elementName=elementName;
         this.atomicMass=atomicMass;
@@ -26,6 +27,7 @@ public class Element {
         this.ionName=ionName;
         this.chargeArray=chargeArray;
     }
+
     //no atomic mass
     public Element (String elementName, int atomicNumber){
         this.elementName=elementName;
