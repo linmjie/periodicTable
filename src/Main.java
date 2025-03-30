@@ -11,15 +11,16 @@ public class Main{
         while (!input.equalsIgnoreCase("quit")){
             System.out.print("Input: ");
             Scanner mainInput = new Scanner(System.in);
+            //takes next string inputted by user
             input = mainInput.next();
             if (input.equalsIgnoreCase("quit"))
                 break;
             input=input.trim();
             System.out.println("Your input: " + input);
-            //process
-            if (findMolarMass(input)>0)
+            //calculate molar mass
+            try {
                 System.out.println("Molar Mass of " + input + ": " + findMolarMass(input));
-            else {
+            } catch (Exception e){
                 System.out.println("    Please input a valid string");
                 System.out.println("    Example input: \"Mg(NO4)2\" with a subscript after the element or compound");
             }
@@ -87,6 +88,10 @@ public class Main{
                 molarMass+=findMolarMass(formula.substring(startIndex,endIndex))*subscript;
             }
         }
-        return molarMass;
+        if (molarMass>0)
+            return molarMass;
+        else
+            //Invalid inputs that cannot be converted into elemental composition (i.e. "oKi{4}d"
+            throw new NumberFormatException("Inputted String cannot be converted into elemental composition");
     }
 }
