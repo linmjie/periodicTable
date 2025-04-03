@@ -2,28 +2,62 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main{
+    public static boolean checkPoly = false;
+
     //HashMap of strings(element symbols) to the element objects
     static HashMap<String, Element> element = new HashMap<>(Symbol.createPeriodicTable());
+    static PolyatmoicNames polyNames = new PolyatmoicNames();
+
     public static void main(String[] args) {
         //take input
-        System.out.println("Type \"quit\" to end program");
+        System.out.println("Type \"quit\" to end program, and \"ply\" for a polyatomic ion finder");
         String input = "";
         while (!input.equalsIgnoreCase("quit")){
             System.out.print("Input: ");
             Scanner mainInput = new Scanner(System.in);
             //takes next string inputted by user
             input = mainInput.next();
-            if (input.equalsIgnoreCase("quit"))
-                break;
+            if (input.equalsIgnoreCase("quit")){
+                    break;
+
+            }
+            if(input.equalsIgnoreCase("break")){
+                if(checkPoly){
+                    checkPoly = false;
+                    System.out.println("Returned to main program");
+                }
+            }
             input=input.trim();
             System.out.println("Your input: " + input);
-            //calculate molar mass
-            try {
-                System.out.println("Molar Mass of " + input + ": " + findMolarMass(input));
-            } catch (Exception e){
-                System.out.println("    Please input a valid string");
-                System.out.println("    Example input: \"Mg(NO4)2\" with a subscript after the element or compound");
+
+            if (input.equalsIgnoreCase("ply")&&!checkPoly) {
+                System.out.println("Now finding polyatomic ions. Type a name (eg. \"nitrate\") " +
+                        "Type break to return to the base program");
+                checkPoly = true;
             }
+            else if(checkPoly){
+                try{
+                    String output = polyNames.findName(input);
+                    if(output!=null){
+                        System.out.println("The formula for "+input+" is "+output);
+                    }
+                    else{
+                        System.out.println("That is not a valid or currently included polyatomic ion");
+                    }
+                } catch (Exception e) {
+                    System.out.println("That is not a valid or currently included polyatomic ion");
+                }
+            }
+            else{
+                //calculate molar mass
+                try {
+                    System.out.println("Molar Mass of " + input + ": " + findMolarMass(input));
+                } catch (Exception e){
+                    System.out.println("    Please input a valid string");
+                    System.out.println("    Example input: \"Mg(NO4)2\" with a subscript after the element or compound");
+                }
+            }
+
         }
     }
     public static float findMolarMass(String formula) {
