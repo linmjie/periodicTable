@@ -8,13 +8,13 @@ public class ChemistryEquation {
     private final static float LITERS_PER_MOLE = 22.4F;
     //Would be a non-static method applied to a HashMap if it was possible T_T
     //takes value(quantity of element) mapped to element (the element/element symbol) and adds to it if possible
-        //otherwise, creates a new pair with inputted element and inputted coefficient
-    private static void addElementCoefficient(HashMap<Element,Integer> elementsQuantityMap, Element key, int coefficient){
+        //otherwise, creates a new pair with inputted element and inputted Subscript
+    private static void addElementSubscript(HashMap<Element,Integer> elementsQuantityMap, Element key, int subscript){
         if (elementsQuantityMap.containsKey(key)){
-            int newCoefficient = elementsQuantityMap.get(key) + coefficient;
-            elementsQuantityMap.replace(key, newCoefficient);
+            int newSubscript = elementsQuantityMap.get(key) + subscript;
+            elementsQuantityMap.replace(key, newSubscript);
         } else
-            elementsQuantityMap.put(key,coefficient);
+            elementsQuantityMap.put(key,subscript);
     }
     //
     private static HashMap<Element,Integer>convertEquation(String formula) {
@@ -47,7 +47,7 @@ public class ChemistryEquation {
                     }
                     subscript=Integer.parseInt(formula.substring(startIndex,endIndex));
                 }
-                addElementCoefficient(elementsQuantityMap, element.get(symbol), subscript);
+                addElementSubscript(elementsQuantityMap, element.get(symbol), subscript);
             }
             //check for opening parenthesis
             //saves the substring within (   ) and inputs that into convertEquation recursively
@@ -78,7 +78,7 @@ public class ChemistryEquation {
                 }
                 Map<Element,Integer>tempElementsQuantityMap=convertEquation(formula.substring(startIndex,endIndex));
                 for (Map.Entry<Element,Integer> entry: tempElementsQuantityMap.entrySet())
-                    addElementCoefficient(elementsQuantityMap, entry.getKey(), entry.getValue()*subscript);
+                    addElementSubscript(elementsQuantityMap, entry.getKey(), entry.getValue()*subscript);
             }
         }
         if (!elementsQuantityMap.isEmpty())
