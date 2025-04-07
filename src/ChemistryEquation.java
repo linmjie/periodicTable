@@ -1,6 +1,8 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+//A class of static methods designed to perform the calculations necessary for all outputs by the program
 public class ChemistryEquation {
     //HashMap of strings(element symbols) to the element objects
     private static final HashMap<String, Element> element = new HashMap<>(Symbol.createPeriodicTable());
@@ -16,8 +18,7 @@ public class ChemistryEquation {
         } else
             elementsQuantityMap.put(key,subscript);
     }
-    //
-    private static HashMap<Element,Integer>convertEquation(String formula) {
+    private static HashMap<Element,Integer>convertCompound(String formula) {
         HashMap<Element,Integer>elementsQuantityMap= new HashMap<>();
         //many incrementations for i within loop, advancing the index of the inputted string "formula"
         //each full iteration of loop should be one element or a compound within parentheses
@@ -50,8 +51,8 @@ public class ChemistryEquation {
                 addElementSubscript(elementsQuantityMap, element.get(symbol), subscript);
             }
             //check for opening parenthesis
-            //saves the substring within (   ) and inputs that into convertEquation recursively
-            //return of convertEquation's quantities in elementsQuantityMap is added to main elementsQuantityMap
+            //saves the substring within (   ) and inputs that into convertCompound recursively
+            //return of convertCompound's quantities in elementsQuantityMap is added to main elementsQuantityMap
             else if(formula.charAt(i)=='('){
                 int subscript=1;
                 i++;
@@ -76,7 +77,7 @@ public class ChemistryEquation {
                     }
                     subscript=Integer.parseInt(formula.substring(subscriptStartIndex, subscriptEndIndex));
                 }
-                Map<Element,Integer>tempElementsQuantityMap=convertEquation(formula.substring(startIndex,endIndex));
+                Map<Element,Integer>tempElementsQuantityMap=convertCompound(formula.substring(startIndex,endIndex));
                 for (Map.Entry<Element,Integer> entry: tempElementsQuantityMap.entrySet())
                     addElementSubscript(elementsQuantityMap, entry.getKey(), entry.getValue()*subscript);
             }
@@ -87,9 +88,43 @@ public class ChemistryEquation {
             //Invalid inputs that cannot be converted into elemental composition and thus would leave hashmap empty(i.e. "oKi{4}d)
             throw new NumberFormatException("Inputted String cannot be converted into elemental composition");
     }
+    /*method used to convert an equation with:
+        reactant HashMap of compound(String) to its quantity(int)
+        product HashMap of compound(String) to its quantity(int)
+        used to breakdown a full equation into more usable chunks of compounds and coefficients
+     */
+    public static ArrayList<HashMap<String,Integer>> convertEquation(String formula){
+        ArrayList<HashMap<String,Integer>> formulaBreakdown = new ArrayList<>(2);
+        //HashMap of a compound String in an equation (either reactant or product) to its quantity (coefficient)
+        HashMap<String,Integer> reactantHashMap = new HashMap<>();
+        HashMap<String,Integer> productHashMap = new HashMap<>();
+        //Primary iterator over the inputted String named formula to process
+        for (int i=0; i<formula.length(); i++){
+            int coefficient=1;
+            if (Character.isDigit((formula.charAt(i)))) {
+                final int startIndex=i;
+                int endIndex=i+1;
+                while (formula.length() > i + 1 && Character.isDigit(formula.charAt(i + 1))) {
+                    i++;
+                    endIndex++;
+                }
+                coefficient=Integer.parseInt(formula.substring(startIndex,endIndex));
+            }
+            final int startIndex=i;
+            int endIndex=i+1;
+            while (formula.charAt(i+1)!='+' || formula.charAt(i+1)!='='){
+                i++;
+                endIndex++;
+            }
+            reactantHashMap.put(formula.substring(startIndex,endIndex), coefficient);
+        }
+        formulaBreakdown.addLast(reactantHashMap);
+        formulaBreakdown.addLast(productHashMap);
+        return formulaBreakdown;
+    }
     public static float findMolarMass (String formula){
         float molarMass=0;
-        Map<Element,Integer> elementQuantityMap = new HashMap<>(convertEquation(formula));
+        Map<Element,Integer> elementQuantityMap = new HashMap<>(convertCompound(formula));
         for (Map.Entry<Element, Integer> entry: elementQuantityMap.entrySet()){
             molarMass+=entry.getKey().getAtomicMass()*entry.getValue();
         }
@@ -97,13 +132,13 @@ public class ChemistryEquation {
     }
     public static void findPercentComposition (String formula){
         float molarMass=0;
-        Map<Element,Integer> elementQuantityMap = new HashMap<>(convertEquation(formula));
+        Map<Element,Integer> elementQuantityMap = new HashMap<>(convertCompound(formula));
         for (Map.Entry<Element, Integer> entry: elementQuantityMap.entrySet()){
             molarMass+=entry.getKey().getAtomicMass()*entry.getValue();
         }
         for (Map.Entry<Element, Integer> entry: elementQuantityMap.entrySet()){
-            System.out.println(entry.getKey().getElementName() + ": " +
-                    ((entry.getKey().getAtomicMass()*entry.getValue())/molarMass)*100 +"%");
+            System.out.println(entry.getKey().getElementName() + ": " +  //gets element name of entry
+                    ((entry.getKey().getAtomicMass()*entry.getValue())/molarMass)*100 +"%");  //gets percent composition of entry
         }
     }
 }

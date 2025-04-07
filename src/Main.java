@@ -4,7 +4,9 @@ import java.util.Scanner;
 public class Main {
     //HashMap of strings(element symbols) to the element objects
     static HashMap<String, Element> element = new HashMap<>(Symbol.createPeriodicTable());
-    static PolyatmoicNames polyNames = new PolyatmoicNames();
+    //object to access a switch statement for all the polyatomic names
+    //definitely will delete this later when implementing usage of ions lol
+    static PolyatomicNames polyNames = new PolyatomicNames();
     public static void main(String[] args) {
         //take input
         System.out.println("Type \"quit\" to end program");
@@ -17,11 +19,12 @@ public class Main {
                        3. Polyatomic ion finder""");
             System.out.print("Program Type Input: ");
             Scanner mainEquationTypeInput = new Scanner(System.in);
-            //takes next string inputted by user
             equationTypeInput = mainEquationTypeInput.next();
             if (equationTypeInput.equalsIgnoreCase("quit"))
                 break;
             equationTypeInput = equationTypeInput.trim();
+
+            //switch statement for handling calculation type input
             switch (equationTypeInput) {
                 case ("1"): {
                     System.out.println("""
@@ -33,7 +36,6 @@ public class Main {
                     while (!mainInput.equalsIgnoreCase("break")) {
                         System.out.print("Equation or Compound Input: ");
                         Scanner mainCompoundInput = new Scanner(System.in);
-                        //takes next string inputted by user
                         mainInput = mainCompoundInput.next();
                         if (mainInput.equalsIgnoreCase("break")) {
                             System.out.println();
@@ -61,7 +63,6 @@ public class Main {
                     while (!mainInput.equalsIgnoreCase("break")) {
                         System.out.print("Equation or Compound Input: ");
                         Scanner mainCompoundInput = new Scanner(System.in);
-                        //takes next string inputted by user
                         mainInput = mainCompoundInput.next();
                         if (mainInput.equalsIgnoreCase("break")) {
                             System.out.println();
@@ -69,7 +70,7 @@ public class Main {
                         }
                         mainInput = mainInput.trim();
                         System.out.println("Your input: " + mainInput);
-                        //calculate molar mass
+                        //calculates percent composition
                         try {
                             System.out.println("Molar Mass of " + mainInput + ": " + ChemistryEquation.findMolarMass(mainInput));
                             ChemistryEquation.findPercentComposition(mainInput);
@@ -90,7 +91,6 @@ public class Main {
                     while (!mainInput.equalsIgnoreCase("break")) {
                         System.out.print("Compound: ");
                         Scanner mainCompoundInput = new Scanner(System.in);
-                        //takes next string inputted by user
                         mainInput = mainCompoundInput.next();
                         if (mainInput.equalsIgnoreCase("break")) {
                             System.out.println();

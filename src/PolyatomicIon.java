@@ -1,13 +1,20 @@
 import java.util.HashMap;
+import java.util.Map;
+
 public class PolyatomicIon extends Element{
-    private HashMap<Element,Integer> elementCount = new HashMap<>();
-    public PolyatomicIon(HashMap<Element,Integer> elementCount, String ionName, int charge, float atomicMass, int atomicNumber){
+    private Map<Element,Integer> elementCount = new HashMap<>();
+    public PolyatomicIon(HashMap<Element,Integer> elementCount, String ionName, int charge){
         //calculate molar mass here
         //no element name, ion name only (i.e. nitrate); hence elementName is null
-        super(ionName, charge,null, atomicMass, atomicNumber);
+        super(ionName, charge,null, 0, 0);
         this.elementCount=elementCount;
+        float tempMass=0F;
+        for (Map.Entry<Element,Integer> entry: elementCount.entrySet()){
+            tempMass+=entry.getKey().getAtomicMass()*entry.getValue();
+        }
+        super.setAtomicMass(tempMass);
     }
-    public HashMap<Element,Integer> getElementCount(){
+    public Map<Element,Integer> getElementCount(){
         return elementCount;
     }
     @Override

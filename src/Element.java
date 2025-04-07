@@ -43,7 +43,9 @@ public class Element {
     public int getAtomicNumber (){
         return atomicNumber;
     }
-
+    public void setAtomicMass(float atomicMass){
+        this.atomicMass=atomicMass;
+    }
     public String getIonName(){
         return ionName;
     }

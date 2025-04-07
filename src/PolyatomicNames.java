@@ -1,6 +1,5 @@
-public class PolyatmoicNames {
-
-    public PolyatmoicNames(){
+public class PolyatomicNames {
+    public PolyatomicNames(){
 
     }
 
@@ -23,7 +22,7 @@ public class PolyatmoicNames {
                 return "CN-";
             case "hydroxide":
                 return "OH-";
-            case "hypochlorate":
+            case "hypochlorite":
                 return "ClO-";
             case "nitrate":
                 return "NO3-";
