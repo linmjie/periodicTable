@@ -137,7 +137,7 @@ public class ChemistryEquation {
             molarMass+=entry.getKey().getAtomicMass()*entry.getValue();
         }
         for (Map.Entry<Element, Integer> entry: elementQuantityMap.entrySet()){
-            System.out.println(entry.getKey().getElementName() + ": " +  //gets element name of entry
+            System.out.println("    "+entry.getKey().getElementName() + ": " +  //gets element name of entry
                     ((entry.getKey().getAtomicMass()*entry.getValue())/molarMass)*100 +"%");  //gets percent composition of entry
         }
     }
