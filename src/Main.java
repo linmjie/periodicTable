@@ -88,7 +88,7 @@ public class Main {
                         }
                         mainInput = mainInput.trim();
                         System.out.println("    Your input: " + mainInput);
-                        //doesn't do anything right now
+                        System.out.println(ChemistryEquation.molarStoichiometry("3AgNO4+AlS=Al(NO4)3+Ag3S",1,"AgNO4","Ag3S")); //test
                     }
                     break;
                 }

@@ -13,8 +13,8 @@ public class ChemistryEquation {
         //otherwise, creates a new pair with inputted element and inputted Subscript
     private static void addElementSubscript(HashMap<Element,Integer> elementsQuantityMap, Element key, int subscript){
         if (elementsQuantityMap.containsKey(key)){
-            int newSubscript = elementsQuantityMap.get(key) + subscript;
-            elementsQuantityMap.replace(key, newSubscript);
+            int newSubscript = elementsQuantityMap.get(key) + subscript; //adds subscript passed through this method to value of value associated with key
+            elementsQuantityMap.replace(key, newSubscript); //sets value to new value
         } else
             elementsQuantityMap.put(key,subscript);
     }
@@ -93,12 +93,13 @@ public class ChemistryEquation {
         product HashMap of compound(String) to its quantity(int)
         used to breakdown a full equation into more usable chunks of compounds and coefficients
      */
-    public static ArrayList<HashMap<String,Integer>> convertEquation(String formula){
+    private static ArrayList<HashMap<String,Integer>> convertEquation(String formula){
         ArrayList<HashMap<String,Integer>> formulaBreakdown = new ArrayList<>(2);
         //HashMap of a compound String in an equation (either reactant or product) to its quantity (coefficient)
         HashMap<String,Integer> reactantHashMap = new HashMap<>();
         HashMap<String,Integer> productHashMap = new HashMap<>();
         //Primary iterator over the inputted String named formula to process
+        boolean doProducts=false;
         for (int i=0; i<formula.length(); i++){
             int coefficient=1;
             if (Character.isDigit((formula.charAt(i)))) {
@@ -108,15 +109,26 @@ public class ChemistryEquation {
                     i++;
                     endIndex++;
                 }
+                i++;
                 coefficient=Integer.parseInt(formula.substring(startIndex,endIndex));
             }
             final int startIndex=i;
             int endIndex=i+1;
-            while (formula.charAt(i+1)!='+' || formula.charAt(i+1)!='='){
+            while (formula.length()>i+1 && (formula.charAt(i+1)!='+' || formula.charAt(i+1)!='=')){ //a '+' or '=' terminates this while loop
                 i++;
                 endIndex++;
             }
-            reactantHashMap.put(formula.substring(startIndex,endIndex), coefficient);
+            if (!doProducts)
+                reactantHashMap.put(formula.substring(startIndex,endIndex), coefficient);
+            else
+                productHashMap.put(formula.substring(startIndex,endIndex), coefficient);
+            if (formula.charAt(i)=='+')
+                i++;
+            if (formula.charAt(i)=='='){
+                i++;
+                doProducts=true;
+            }
+
         }
         formulaBreakdown.addLast(reactantHashMap);
         formulaBreakdown.addLast(productHashMap);
@@ -140,5 +152,16 @@ public class ChemistryEquation {
             System.out.println("    "+entry.getKey().getElementName() + ": " +  //gets element name of entry
                     ((entry.getKey().getAtomicMass()*entry.getValue())/molarMass)*100 +"%");  //gets percent composition of entry
         }
+    }
+    public static float molarStoichiometry (String formula, float givenMoles, String givenCompound, String outputCompound){
+        float outputMoles=0F;
+        ArrayList<HashMap<String,Integer>> equationMapAccess=new ArrayList<>(convertEquation(formula)); //bundle for two hashmaps
+        HashMap<String,Integer> reactantsMap=new HashMap<>(equationMapAccess.getFirst());
+        HashMap<String,Integer> productsMap=new HashMap<>(equationMapAccess.getLast());
+        outputMoles=givenMoles*((float) productsMap.get(outputCompound) /
+                                        reactantsMap.get(givenCompound));
+        if (outputMoles==0F)
+            throw new NumberFormatException("Could not convert to float number of moles");
+        return outputMoles;
     }
 }
