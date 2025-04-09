@@ -4,6 +4,8 @@ import java.util.Scanner;
 public class Main {
     //HashMap of strings(element symbols) to the element objects
     static HashMap<String, Element> element = new HashMap<>(Symbol.createPeriodicTable());
+    //22.4L/Mol at STP
+    final static float LITERS_PER_MOLE = 22.4F;
     //object to access a switch statement for all the polyatomic names
     //definitely will delete this later when implementing usage of ions lol
     static PolyatomicNames polyNames = new PolyatomicNames();
@@ -28,7 +30,7 @@ public class Main {
 
             //switch statement for handling calculation type input
             switch (equationTypeInput) {
-                case ("1"): {
+                case ("1"): { //molar mass
                     createHeader("Input a compound to compute its molar mass");
                     String mainInput = "";
                     while (!mainInput.equalsIgnoreCase("break")) {
@@ -51,7 +53,7 @@ public class Main {
                     }
                     break;
                 }
-                case ("2"): {
+                case ("2"): { //percent composition
                     createHeader("Input a compound to compute its percent composition");
                     String mainInput = "";
                     while (!mainInput.equalsIgnoreCase("break")) {
@@ -75,7 +77,8 @@ public class Main {
                     }
                     break;
                 }
-                case "3": {
+                //bleh
+                case "3": { //stoichiometry
                     createHeader("First step: input your equation");
                     String mainInput = "";
                     while (!mainInput.equalsIgnoreCase("break")) {
@@ -88,11 +91,53 @@ public class Main {
                         }
                         mainInput = mainInput.trim();
                         System.out.println("    Your input: " + mainInput);
-                        System.out.println(ChemistryEquation.molarStoichiometry("3AgNO4+AlS=Al(NO4)3+Ag3S",1,"AgNO4","Ag3S")); //test
+                        //input compound
+                        System.out.println("        Now type the given compound (i.e. AgNO4) exactly how you typed it in the equation");
+                        String givenCompound="";
+                        System.out.print("        Your input (input compound): ");
+                        Scanner givenCompoundInput=new Scanner(System.in);
+                        givenCompound=givenCompoundInput.next();
+                        if (givenCompound.equalsIgnoreCase("break")){
+                            System.out.println();
+                            break;
+                        }
+                        System.out.println("\n"+"       Now type your resultant compound whose quantity you want to find exactly how you typed it in the equation");
+                        String outputCompound="";
+                        System.out.print("        Your input (resultant compound): ");
+                        Scanner outputCompoundInput=new Scanner(System.in);
+                        outputCompound=outputCompoundInput.next();
+                        if (outputCompound.equalsIgnoreCase("break")){
+                            System.out.println();
+                            break;
+                        }
+                        System.out.println("""
+                                
+                                Now type the number associated with the unit of matter you have of your inputted compound:
+                                    1. Moles
+                                    2. Grams
+                                    3. Liters (assumed to be gas at STP)""");
+                        String unit = "";
+                        System.out.print("      Your input (unit): ");
+                        Scanner unitInput=new Scanner(System.in);
+                        unit=unitInput.next();
+                        float amount=0F;
+                        System.out.print("        Amount: ");
+                        Scanner amountInput=new Scanner(System.in);
+                        amount=amountInput.nextFloat();
+                        if (unit.equalsIgnoreCase("break")){
+                            System.out.println();
+                            break;
+                        }
+                        switch (unit){
+                            case ("1"):
+                                System.out.println(ChemistryEquation.molarStoichiometry(mainInput, amount, givenCompound, outputCompound));
+                                break;
+                        }
+                        //System.out.println(ChemistryEquation.molarStoichiometry("3AgNO4+AlS=Al(NO4)3+Ag3S",1,"AgNO4","Ag3S")); //test
                     }
                     break;
                 }
-                case "4": {
+                case "4": { //find supported polyatomic ion
                     createHeader("Now finding polyatomic ions. Type a name (eg. \"nitrate\")");
                     String mainInput = "";
                     while (!mainInput.equalsIgnoreCase("break")) {
@@ -125,7 +170,7 @@ public class Main {
             }
         }
     }
-
+    //shortcut for creating the header of each switch case
     public static void createHeader(String finalHeaderLine) {
         System.out.println("""
                 

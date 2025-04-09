@@ -6,8 +6,6 @@ import java.util.Map;
 public class ChemistryEquation {
     //HashMap of strings(element symbols) to the element objects
     private static final HashMap<String, Element> element = new HashMap<>(Symbol.createPeriodicTable());
-    //22.4L/Mol at STP
-    private final static float LITERS_PER_MOLE = 22.4F;
     //Would be a non-static method applied to a HashMap if it was possible T_T
     //takes value(quantity of element) mapped to element (the element/element symbol) and adds to it if possible
         //otherwise, creates a new pair with inputted element and inputted Subscript
@@ -114,7 +112,7 @@ public class ChemistryEquation {
             }
             final int startIndex=i;
             int endIndex=i+1;
-            while (formula.length()>i+1 && (formula.charAt(i+1)!='+' || formula.charAt(i+1)!='=')){ //a '+' or '=' terminates this while loop
+            while (formula.length()>i+1 && formula.charAt(i+1)!='+' && formula.charAt(i+1)!='='){ //a '+' or '=' terminates this while loop
                 i++;
                 endIndex++;
             }
@@ -122,9 +120,9 @@ public class ChemistryEquation {
                 reactantHashMap.put(formula.substring(startIndex,endIndex), coefficient);
             else
                 productHashMap.put(formula.substring(startIndex,endIndex), coefficient);
-            if (formula.charAt(i)=='+')
+            if (formula.length()>i+1 && formula.charAt(i+1)=='+')
                 i++;
-            if (formula.charAt(i)=='='){
+            if (formula.length()>i+1 && formula.charAt(i+1)=='='){
                 i++;
                 doProducts=true;
             }
