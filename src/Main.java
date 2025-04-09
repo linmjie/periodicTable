@@ -1,9 +1,6 @@
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
-    //HashMap of strings(element symbols) to the element objects
-    static HashMap<String, Element> element = new HashMap<>(Symbol.createPeriodicTable());
     //22.4L/Mol at STP
     final static float LITERS_PER_MOLE = 22.4F;
     //object to access a switch statement for all the polyatomic names
