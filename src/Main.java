@@ -143,7 +143,7 @@ public class Main {
                             System.out.println();
                             break;
                         }
-                        //try{
+                        try{
                             float moleInput = ChemistryEquation.convertToMoles(inputUnit, amount, givenCompound);
                             float outputMoles = ChemistryEquation.molarStoichiometry(mainInput, moleInput, givenCompound, outputCompound);
                             float outputInProperUnit = ChemistryEquation.molesToUnit(outputUnit, outputMoles, outputCompound);
@@ -155,9 +155,9 @@ public class Main {
                                 default->throw new IllegalArgumentException("Unit did not match units listed");
                             }
                             System.out.println("      "+outputInProperUnit+properUnit+" of "+outputCompound);
-                        //} catch (Exception e) {
-                          //  System.out.println("        Something went wrong, try again");
-                        //}
+                        } catch (Exception e) {
+                            System.out.println("        Something went wrong, try again");
+                        }
                         //System.out.println(ChemistryEquation.molarStoichiometry("3AgNO4+AlS=Al(NO4)3+Ag3S",1,"AgNO4","Ag3S")); //test
                     }
                     break;
