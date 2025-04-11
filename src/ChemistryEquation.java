@@ -154,7 +154,7 @@ public class ChemistryEquation {
         }
     }
     public static float molarStoichiometry (String formula, float givenMoles, String givenCompound, String outputCompound){
-        float outputMoles=0F;
+        float outputMoles;
         ArrayList<HashMap<String,Integer>> equationMapAccess=new ArrayList<>(convertEquation(formula)); //bundle for two hashmaps
         HashMap<String,Integer> reactantsMap=new HashMap<>(equationMapAccess.getFirst());
         HashMap<String,Integer> productsMap=new HashMap<>(equationMapAccess.getLast());

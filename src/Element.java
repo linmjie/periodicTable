@@ -1,7 +1,7 @@
 public class Element {
-    private String elementName;
+    private final String elementName;
     private float atomicMass;
-    private int atomicNumber;
+    private final int atomicNumber;
 
     private String ionName;
     private int charge;

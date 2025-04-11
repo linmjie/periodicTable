@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PolyatomicIon extends Element{
-    private Map<Element,Integer> elementCount = new HashMap<>();
+    private final Map<Element,Integer>elementCount;
     public PolyatomicIon(HashMap<Element,Integer> elementCount, String ionName, int charge){
         //calculate molar mass here
         //no element name, ion name only (i.e. nitrate); hence elementName is null

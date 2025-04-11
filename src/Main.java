@@ -88,7 +88,7 @@ public class Main {
                         System.out.println("    Your input: " + mainInput);
                         //input compound
                         System.out.println("        Now type the given compound (i.e. AgNO4) exactly how you typed it in the equation");
-                        String givenCompound="";
+                        String givenCompound;
                         System.out.print("        Your input (input compound): ");
                         Scanner givenCompoundInput=new Scanner(System.in);
                         givenCompound=givenCompoundInput.next();
@@ -97,7 +97,7 @@ public class Main {
                             break;
                         }
                         System.out.println("\n"+"       Now type your resultant compound whose quantity you want to find exactly how you typed it in the equation");
-                        String outputCompound="";
+                        String outputCompound;
                         System.out.print("        Your input (resultant compound): ");
                         Scanner outputCompoundInput=new Scanner(System.in);
                         outputCompound=outputCompoundInput.next();
@@ -111,11 +111,11 @@ public class Main {
                                     1. Moles
                                     2. Grams
                                     3. Liters (assumed to be gas at STP)""");
-                        String inputUnit = "";
+                        String inputUnit;
                         System.out.print("      Your input (unit): ");
                         Scanner inputUnitInput=new Scanner(System.in);
                         inputUnit=inputUnitInput.next();
-                        float amount = 0F;
+                        float amount;
                         while (true) {
                             System.out.print("        Amount: ");
                             Scanner amountInput = new Scanner(System.in);
@@ -136,7 +136,7 @@ public class Main {
                                     1. Moles
                                     2. Grams
                                     3. Liters (assumed to be gas at STP)""");
-                        String outputUnit = "";
+                        String outputUnit;
                         System.out.print("      Your input (unit): ");
                         Scanner outputUnitInput=new Scanner(System.in);
                         outputUnit=outputUnitInput.next();
