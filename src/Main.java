@@ -74,6 +74,7 @@ public class Main {
                 }
                 case "3", "stoichiometry": { //stoichiometry
                     createHeader("First step: input your equation");
+                    System.out.println("Please do not use spaces in your equation and use an equal sign to show a reaction. ex. \"3AgNO4+AlS=Al(NO4)3+Ag3S\"");
                     String mainInput = "";
                     while (!mainInput.equalsIgnoreCase("break")) {
                         System.out.print("  Equation Input: ");
