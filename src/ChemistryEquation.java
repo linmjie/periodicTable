@@ -6,6 +6,8 @@ import java.util.Map;
 public class ChemistryEquation {
     //HashMap of strings(element symbols) to the element objects
     private static final HashMap<String, Element> element = new HashMap<>(Symbol.createPeriodicTable());
+    //22.4L/Mol at STP
+    final static float LITERS_PER_MOLE = 22.4F;
     //Would be a non-static method applied to a HashMap if it was possible T_T
     //takes value(quantity of element) mapped to element (the element/element symbol) and adds to it if possible
         //otherwise, creates a new pair with inputted element and inputted Subscript
@@ -161,5 +163,23 @@ public class ChemistryEquation {
         if (outputMoles==0F)
             throw new NumberFormatException("Could not convert to float number of moles");
         return outputMoles;
+    }
+    // converts units (moles, grams, or liters) to moles
+    public static float convertToMoles (String inputUnit, float amount, String inputCompound){
+        return switch (inputUnit) {
+            case "1", "mol", "mole", "moles" -> amount; //moles stay same because it is the same unit
+            case "2", "g", "gram", "grams" -> amount / findMolarMass(inputCompound); //grams divided by g/mol(from molar mass of compound) to get moles
+            case "3", "l", "liter", "liters" -> amount / LITERS_PER_MOLE; //liters divided by l/mol(gas at STP: 22l/mol) to get moles
+            default -> throw new IllegalArgumentException("Input did not match any unit input case");
+        };
+    }
+    // converts moles to unit (mole, gram, or liter)
+    public static float molesToUnit (String outputUnit, float moles, String outputCompound){
+        return switch (outputUnit) {
+            case "1", "mol", "mole", "moles" -> moles; //moles stays same because it is the same unit
+            case "2", "g", "gram", "grams" -> moles * findMolarMass(outputCompound); //moles times g/mol(from molar mass of compound) to get grams
+            case "3", "l", "liter", "liters" -> moles * LITERS_PER_MOLE; //moles times l/mol(gas at STP: 22l/mol) to get liters
+            default -> throw new IllegalArgumentException("Input did not match any unit output case");
+        };
     }
 }

@@ -1,8 +1,6 @@
 import java.util.Scanner;
 
 public class Main {
-    //22.4L/Mol at STP
-    final static float LITERS_PER_MOLE = 22.4F;
     //object to access a switch statement for all the polyatomic names
     //definitely will delete this later when implementing usage of ions lol
     static PolyatomicNames polyNames = new PolyatomicNames();
@@ -26,8 +24,8 @@ public class Main {
             equationTypeInput = equationTypeInput.trim();
 
             //switch statement for handling calculation type input
-            switch (equationTypeInput) {
-                case ("1"): { //molar mass
+            switch (equationTypeInput.toLowerCase()) {
+                case "1","mass": { //molar mass
                     createHeader("Input a compound to compute its molar mass");
                     String mainInput = "";
                     while (!mainInput.equalsIgnoreCase("break")) {
@@ -50,7 +48,7 @@ public class Main {
                     }
                     break;
                 }
-                case ("2"): { //percent composition
+                case "2","percent", "composition": { //percent composition
                     createHeader("Input a compound to compute its percent composition");
                     String mainInput = "";
                     while (!mainInput.equalsIgnoreCase("break")) {
@@ -74,8 +72,7 @@ public class Main {
                     }
                     break;
                 }
-                //bleh
-                case "3": { //stoichiometry
+                case "3", "stoichiometry": { //stoichiometry
                     createHeader("First step: input your equation");
                     String mainInput = "";
                     while (!mainInput.equalsIgnoreCase("break")) {
@@ -113,28 +110,59 @@ public class Main {
                                     1. Moles
                                     2. Grams
                                     3. Liters (assumed to be gas at STP)""");
-                        String unit = "";
+                        String inputUnit = "";
                         System.out.print("      Your input (unit): ");
-                        Scanner unitInput=new Scanner(System.in);
-                        unit=unitInput.next();
-                        float amount=0F;
-                        System.out.print("        Amount: ");
-                        Scanner amountInput=new Scanner(System.in);
-                        amount=amountInput.nextFloat();
-                        if (unit.equalsIgnoreCase("break")){
+                        Scanner inputUnitInput=new Scanner(System.in);
+                        inputUnit=inputUnitInput.next();
+                        float amount = 0F;
+                        while (true) {
+                            System.out.print("        Amount: ");
+                            Scanner amountInput = new Scanner(System.in);
+                            try {
+                                amount = amountInput.nextFloat();
+                                break;
+                            } catch (Exception e) {
+                                System.out.println("Please input a number");
+                            }
+                        }
+                        if (inputUnit.equalsIgnoreCase("break")){
                             System.out.println();
                             break;
                         }
-                        switch (unit){
-                            case ("1"):
-                                System.out.println(ChemistryEquation.molarStoichiometry(mainInput, amount, givenCompound, outputCompound));
-                                break;
+                        System.out.println("""
+                                
+                                Now type the number associated with the unit of matter you have of your resultant compound:
+                                    1. Moles
+                                    2. Grams
+                                    3. Liters (assumed to be gas at STP)""");
+                        String outputUnit = "";
+                        System.out.print("      Your input (unit): ");
+                        Scanner outputUnitInput=new Scanner(System.in);
+                        outputUnit=outputUnitInput.next();
+                        if (outputUnit.equalsIgnoreCase("break")){
+                            System.out.println();
+                            break;
                         }
+                        //try{
+                            float moleInput = ChemistryEquation.convertToMoles(inputUnit, amount, givenCompound);
+                            float outputMoles = ChemistryEquation.molarStoichiometry(mainInput, moleInput, givenCompound, outputCompound);
+                            float outputInProperUnit = ChemistryEquation.molesToUnit(outputUnit, outputMoles, outputCompound);
+                            String properUnit;
+                            switch (outputUnit.toLowerCase()){
+                                case "1", "mol", "mole", "moles"->properUnit="mol";
+                                case "2", "g", "gram", "grams"->properUnit="g";
+                                case "3", "l", "liter", "liters"->properUnit="l";
+                                default->throw new IllegalArgumentException("Unit did not match units listed");
+                            }
+                            System.out.println("      "+outputInProperUnit+properUnit+" of "+outputCompound);
+                        //} catch (Exception e) {
+                          //  System.out.println("        Something went wrong, try again");
+                        //}
                         //System.out.println(ChemistryEquation.molarStoichiometry("3AgNO4+AlS=Al(NO4)3+Ag3S",1,"AgNO4","Ag3S")); //test
                     }
                     break;
                 }
-                case "4": { //find supported polyatomic ion
+                case "4", "find": { //find supported polyatomic ion
                     createHeader("Now finding polyatomic ions. Type a name (eg. \"nitrate\")");
                     String mainInput = "";
                     while (!mainInput.equalsIgnoreCase("break")) {
